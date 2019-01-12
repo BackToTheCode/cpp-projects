@@ -1,13 +1,10 @@
 #include "shared.h"
 
-
-// class Piece;
-
 class Board
 {
   private:
-    int m_height { 8 };
-    int m_width { 8 };
+    int m_height{8};
+    int m_width{8};
     int m_size;
     vector<Piece> m_pieces;
 
@@ -19,28 +16,34 @@ class Board
         m_size = m_height * m_width;
     }
 
-    void initBoard() 
+    void initBoard()
     {
+        cout << "\n"
+             << endl;
         cout << "=============================================================" << endl;
-        cout << "\n" << endl;
+        cout << "\n"
+             << endl;
         cout << "     ______  __    __   _______       _______.   _______. " << endl;
         cout << "    /      ||  |  |  | |   ____|     /       |  /       |" << endl;
         cout << "   |  ,----'|  |__|  | |  |__       |   (----` |   (----`" << endl;
         cout << "   |  |     |   __   | |   __|       \\   \\      \\   \\    " << endl;
         cout << "   |  `----.|  |  |  | |  |____  .----)   | .----)   |   " << endl;
         cout << "    \\______||__|  |__| |_______| |_______/  |_______/    " << endl;
-        cout << "\n" << endl;
-        cout << "============ Welcome to Chess - by James Tuckett ============" << endl;                                            
-        cout << "\n" << endl;
-        
+        cout << "\n"
+             << endl;
+        cout << "============ Welcome to Chess - by James Tuckett ============" << endl;
+        cout << "\n"
+             << endl;
+        cout << "  White Team = CAPITALS" << endl;
+
         int cells = m_height * m_width;
 
         // BLACK TEAM
-        Piece rook_b {PieceType::ROOK, Freedom::CROSS, Team::BLACK};
-        Piece knight_b {PieceType::KNIGHT, Freedom::HOOK, Team::BLACK};
-        Piece bishop_b {PieceType::BISHOP, Freedom::DIAGONAL, Team::BLACK};
-        Piece queen_b {PieceType::QUEEN, Freedom::DIAGONAL, Team::BLACK};
-        Piece king_b {PieceType::KING, Freedom::DIAGONAL, Team::BLACK};
+        Piece rook_b{PieceType::ROOK, Freedom::CROSS, Team::BLACK};
+        Piece knight_b{PieceType::KNIGHT, Freedom::HOOK, Team::BLACK};
+        Piece bishop_b{PieceType::BISHOP, Freedom::DIAGONAL, Team::BLACK};
+        Piece queen_b{PieceType::QUEEN, Freedom::DIAGONAL, Team::BLACK};
+        Piece king_b{PieceType::KING, Freedom::DIAGONAL, Team::BLACK};
 
         m_pieces.at(0) = rook_b;
         m_pieces.at(1) = knight_b;
@@ -50,10 +53,10 @@ class Board
         m_pieces.at(5) = bishop_b;
         m_pieces.at(6) = knight_b;
         m_pieces.at(7) = rook_b;
-        
+
         for (int i = m_width; i < 2 * m_width; i++)
         {
-            Piece pawn {PieceType::PAWN, Freedom::FULL, Team::BLACK};
+            Piece pawn{PieceType::PAWN, Freedom::FULL, Team::BLACK};
             m_pieces.at(i) = pawn;
         }
 
@@ -66,15 +69,15 @@ class Board
         // WHITE TEAM
         for (int i = m_width * (m_height - 2); i < m_size; i++)
         {
-            Piece pawn {PieceType::PAWN, Freedom::FULL, Team::WHITE};
+            Piece pawn{PieceType::PAWN, Freedom::FULL, Team::WHITE};
             m_pieces.at(i) = pawn;
         }
 
-        Piece rook_w {PieceType::ROOK, Freedom::CROSS, Team::WHITE};
-        Piece knight_w {PieceType::KNIGHT, Freedom::HOOK, Team::WHITE};
-        Piece bishop_w {PieceType::BISHOP, Freedom::DIAGONAL, Team::WHITE};
-        Piece queen_w {PieceType::QUEEN, Freedom::DIAGONAL, Team::WHITE};
-        Piece king_w {PieceType::KING, Freedom::DIAGONAL, Team::WHITE};
+        Piece rook_w{PieceType::ROOK, Freedom::CROSS, Team::WHITE};
+        Piece knight_w{PieceType::KNIGHT, Freedom::HOOK, Team::WHITE};
+        Piece bishop_w{PieceType::BISHOP, Freedom::DIAGONAL, Team::WHITE};
+        Piece queen_w{PieceType::QUEEN, Freedom::DIAGONAL, Team::WHITE};
+        Piece king_w{PieceType::KING, Freedom::DIAGONAL, Team::WHITE};
 
         m_pieces.at(m_size - 1) = rook_w;
         m_pieces.at(m_size - 2) = knight_w;
@@ -84,50 +87,94 @@ class Board
         m_pieces.at(m_size - 6) = bishop_w;
         m_pieces.at(m_size - 7) = knight_w;
         m_pieces.at(m_size - 8) = rook_w;
-
-
     }
 
-    void printRows(bool printIcon = true, int rowCount = 0) 
+    void printColumnHeaders()
     {
-        int index = 0;
-  
+        printLeftMargin();
+
+        cout << "\x1b[31m";
+        const char* headers[8] = {"a","b","c","d","e","f","h","g"};
         for (int i = 0; i < m_width; i++)
         {
-
-            if (printIcon && i < m_width) {
-                index = i + (rowCount * m_width);
-                cout << "\x1b[30;47m| " << m_pieces.at(index).getPieceType() << m_pieces.at(index).getTeam() << " ";
-                
-            } else {
-                cout << "|  " << "    ";
-            }   
-
-            if (i == m_width - 1) 
-            {
-                cout << "|";
-            }
+            cout << "   " << headers[i] << "   ";
         }
+
+        cout << "\x1b[0m";
     }
 
-    void printBoard() 
-    { 
-        for (int j = 0; j < m_height; j++) 
+    void printRowHeader(int rowCount)
+    {
+        cout << "\x1b[31m";
+        cout << "   ";
+        cout << (rowCount + 1);
+        cout << "\x1b[0m";
+    }
+
+    void printLeftMargin()
+    {
+        // Left margin for Chess board
+        cout << "  ";
+    }
+
+    void printRows(bool printIcon = true, int rowCount = 0)
+    {
+
+        int rowCountComparable = rowCount % 2;
+        
+        int index = 0;
+
+        printLeftMargin();
+
+        for (int i = 0; i < m_width; i++)
         {
-            for (int i = 0; i < m_width; i++)
+            
+            if (i % 2 == rowCountComparable)
             {
-                cout << " ------";
+                cout << "\x1b[30;47m";
             }
+            else
+            {
+                cout << "\x1b[37;40m";
+            }
+
+            if (printIcon && i < m_width)
+            {
+                index = i + (rowCount * m_width);
+
+                cout << "   " << m_pieces.at(index).getPieceType() << "   ";
+            }
+            else
+            {
+                cout << "   "
+                     << "    ";
+            }
+        }
+
+        cout << "\x1b[0m"; 
+
+        if (printIcon)
+            printRowHeader(rowCount);
+    }
+
+    void printBoard()
+    {
+        cout << "\n";
+        printColumnHeaders();
+        cout << "\n";
+
+        for (int j = 0; j < m_height; j++)
+        {
+            cout << "\n";
+            printRows(false, j);
             cout << "\n";
             printRows(true, j);
             cout << "\n";
             printRows(false, j);
-            cout << "\n";
-        }   
+        }
 
-        for (int i = 0; i < m_width; i++)
-        {
-            cout << " ------";
-        }  
+        cout << "\n";
+        cout << "\n";
+        cout << "\n";
     }
 };

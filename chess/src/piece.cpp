@@ -94,19 +94,56 @@ class Piece
 
     const char* getPieceType()
     { 
-        if (m_pieceType == PieceType::PAWN)
-            return "PN";
-        else if (m_pieceType == PieceType::KNIGHT)
-            return "KT";
-        else if (m_pieceType == PieceType::BISHOP)
-            return "BP";
-        else if (m_pieceType == PieceType::ROOK)
-            return "RK";
-        else if (m_pieceType == PieceType::QUEEN)
-            return "QN";
-        else if (m_pieceType == PieceType::KING)
-            return "KG";
-        else
-            return "  ";
+        if (m_pieceType == PieceType::PAWN) {
+            if (m_team == Team::BLACK) {
+                return "p";
+            }
+            else if (m_team == Team::WHITE) {
+                return "P";
+            }
+        }
+        else if (m_pieceType == PieceType::KNIGHT) {
+            if (m_team == Team::BLACK) {
+                return "n";
+            }
+            else if (m_team == Team::WHITE) {
+                return "N";
+            }
+        }
+        else if (m_pieceType == PieceType::BISHOP) {
+            if (m_team == Team::BLACK) {
+                return "b";
+            }
+            else if (m_team == Team::WHITE) {
+                return "B";
+            }
+        }
+        else if (m_pieceType == PieceType::ROOK) {
+            if (m_team == Team::BLACK) {
+                return "r";
+            }
+            else if (m_team == Team::WHITE) {
+                return "R";
+            }
+        }
+        else if (m_pieceType == PieceType::QUEEN) {
+            if (m_team == Team::BLACK) {
+                return "q";
+            }
+            else if (m_team == Team::WHITE) {
+                return "Q";
+            }
+        }
+        else if (m_pieceType == PieceType::KING) {
+            if (m_team == Team::BLACK) {
+                return "k";
+            }
+            else if (m_team == Team::WHITE) {
+                return "K";
+            }
+        }
+        else {
+            return " ";
+        }
     }
 };
